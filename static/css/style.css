@@ -1,0 +1,84 @@
+body {
+    margin: 0;
+    background: radial-gradient(circle at center, #02060f 0%, #000 70%);
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* общий layout */
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* приборка */
+.cluster {
+    flex: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+}
+
+/* один прибор */
+.gauge {
+    text-align: center;
+}
+
+/* canvas стиль (приборка) */
+canvas {
+    background: radial-gradient(circle, #111 0%, #050505 80%);
+    border-radius: 50%;
+    box-shadow: 0 0 35px rgba(0, 255, 150, 0.15);
+}
+
+/* значение под прибором */
+.value {
+    text-align: center;
+    font-size: 26px;
+    margin-top: 10px;
+    color: #cfcfcf;
+}
+
+/* правая панель */
+.sidebar {
+    flex: 1;
+    background: #050a12;
+    border-left: 1px solid #111;
+    padding: 20px;
+}
+
+/* misfire блок */
+.panel h3 {
+    margin-top: 0;
+    color: #00ff99;
+    letter-spacing: 1px;
+}
+
+/* цилиндры */
+.cyl {
+    padding: 10px;
+    margin: 6px 0;
+    background: #0f0f0f;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+/* состояние fault */
+.cyl.fail {
+    background: #2a0000;
+    color: #ff3b3b;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+/* норм состояние */
+.cyl.ok {
+    color: #00ff99;
+}
+
+/* если хочешь оставить старый misfire overlay — можно, но лучше убрать */
+.misfire {
+    display: none;
+}
