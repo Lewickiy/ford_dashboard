@@ -1,0 +1,27 @@
+"""Driving style and vehicle load assessment."""
+
+
+def assess_driving_style(speed, rpm, throttle, load, temp):
+    score = 0
+    if rpm > 3500:
+        score += 2
+    elif rpm > 2800:
+        score += 1
+    if throttle > 70:
+        score += 2
+    elif throttle > 45:
+        score += 1
+    if load > 80:
+        score += 2
+    elif load > 60:
+        score += 1
+    if temp > 105:
+        score += 2
+
+    if score >= 5:
+        return "Агрессивная езда / высокая нагрузка"
+    if score >= 3:
+        return "Активная езда"
+    if speed < 10 and rpm < 1800:
+        return "Маневрирование / пробка"
+    return "Спокойная езда"

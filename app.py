@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template
 
 from obd_reader import ObdReader
+from vehicle_processors import enrich_state
 
 app = Flask(__name__)
 
@@ -18,7 +19,7 @@ def index():
 
 @app.route("/data")
 def data():
-    state = obd.get_state()
+    state = enrich_state(obd.get_state())
 
     return jsonify(state)
 

@@ -20,7 +20,10 @@ class ObdReader:
             "throttle": 0.0,
             "load": 0.0,
             "intake": 0.0,
+            "maf": 0.0,
+            "fuel_level": 0.0,
             "dtc": None,
+            "reverse": False,
             "connected": False
         }
 
@@ -46,6 +49,19 @@ class ObdReader:
 
         except Exception:
             return 0.0
+
+    def command(self, name):
+
+        return getattr(obd.commands, name, None)
+
+    def query_optional(self, name):
+
+        command = self.command(name)
+
+        if command is None:
+            return None
+
+        return self.query(command)
 
     def query(self, command):
 
@@ -140,6 +156,10 @@ class ObdReader:
                         obd.commands.INTAKE_PRESSURE
                     )
 
+                    maf = self.query_optional("MAF")
+
+                    fuel_level = self.query_optional("FUEL_LEVEL")
+
                     dtc = self.query(
                         obd.commands.GET_DTC
                     )
@@ -153,6 +173,8 @@ class ObdReader:
                     self.state["throttle"] = self.safe(throttle)
                     self.state["load"] = self.safe(load)
                     self.state["intake"] = self.safe(intake)
+                    self.state["maf"] = self.safe(maf)
+                    self.state["fuel_level"] = self.safe(fuel_level)
 
                     self.state["dtc"] = (
                         dtc.value
