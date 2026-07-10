@@ -1,57 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>OBD Dashboard</title>
-
+    <meta charset="UTF-8">
+    <title>Ford Focus OBD Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
+<div class="dashboard-shell">
+    <header class="top-bar">
+        <div>
+            <div class="eyebrow">FORD FOCUS 2 RESTYLING</div>
+            <h1>Live OBD Dashboard</h1>
+        </div>
+        <div class="connection" id="connectionIndicator">
+            <span class="lamp"></span>
+            <span id="connectionText">DISCONNECTED</span>
+        </div>
+    </header>
 
-<div class="layout">
-
-    <!-- ПРИБОРКА -->
-    <div class="cluster">
-
-        <div class="gauge">
-            <canvas id="speed" width="300" height="300"></canvas>
+    <main class="cluster">
+        <section class="gauge large">
+            <canvas id="speed" width="360" height="360"></canvas>
             <div class="value" id="speedText">0 km/h</div>
-        </div>
+        </section>
 
-        <div class="gauge">
-            <div class="gear" id="gearText">N</div>
-            <div class="value">GEAR</div>
-        </div>
+        <section class="center-stack">
+            <div class="shift-light" id="shiftLight">SHIFT ▲</div>
+            <div class="gear-card">
+                <div class="gear-label">GEAR</div>
+                <div class="gear" id="gearText">N</div>
+                <div class="clutch" id="clutchText">Сцепление: engaged</div>
+            </div>
+            <div class="mini-grid">
+                <div><span>THROTTLE</span><strong id="throttleText">0%</strong></div>
+                <div><span>LOAD</span><strong id="loadText">0%</strong></div>
+                <div><span>INTAKE</span><strong id="intakeText">0 kPa</strong></div>
+                <div><span>MAF</span><strong id="mafText">0 g/s</strong></div>
+            </div>
+        </section>
 
-        <div class="gauge">
-            <canvas id="rpm" width="300" height="300"></canvas>
+        <section class="gauge large">
+            <canvas id="rpm" width="360" height="360"></canvas>
             <div class="value" id="rpmText">0 rpm</div>
-        </div>
+        </section>
 
-        <div class="gauge">
-            <canvas id="temp" width="300" height="300"></canvas>
+        <section class="gauge small">
+            <canvas id="temp" width="260" height="260"></canvas>
             <div class="value" id="tempText">0 °C</div>
+        </section>
+    </main>
+
+    <footer class="diagnostics">
+        <div class="message-line"><strong>Стиль езды:</strong> <span id="styleText">—</span></div>
+        <div class="message-line"><strong>Предупреждения:</strong> <span id="alertsText">Системы в норме</span></div>
+        <div class="misfire-row">
+            <strong>Пропуски:</strong>
+            <span id="cyl1" class="cyl ok">Cyl 1 ✔</span>
+            <span id="cyl2" class="cyl ok">Cyl 2 ✔</span>
+            <span id="cyl3" class="cyl ok">Cyl 3 ✔</span>
+            <span id="cyl4" class="cyl ok">Cyl 4 ✔</span>
+            <span id="dtcText" class="dtc">DTC: —</span>
         </div>
-
-    </div>
-
-    <!-- ПАНЕЛЬ ДИАГНОСТИКИ -->
-    <div class="sidebar">
-
-        <div class="panel">
-            <h3>MISFIRE</h3>
-
-            <div id="cyl1" class="cyl">Cylinder 1 ✔</div>
-            <div id="cyl2" class="cyl">Cylinder 2 ✔</div>
-            <div id="cyl3" class="cyl">Cylinder 3 ✔</div>
-            <div id="cyl4" class="cyl">Cylinder 4 ✔</div>
-        </div>
-
-    </div>
-
+    </footer>
 </div>
-
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-
 </body>
 </html>
