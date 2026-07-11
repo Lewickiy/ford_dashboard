@@ -7,7 +7,9 @@
     --green: #24ff8a;
     --red: #ff3038;
     --amber: #ffd34d;
+    --koeo-blue: #4aa3ff;
 }
+
 
 * { box-sizing: border-box; }
 
@@ -54,6 +56,13 @@ h1 {
     font-weight: 700;
 }
 
+.vin-line {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+}
+
 .connection {
     display: inline-flex;
     align-items: center;
@@ -71,8 +80,12 @@ h1 {
     box-shadow: 0 0 14px var(--red);
 }
 
-.connection.connected { color: var(--green); }
-.connection.connected .lamp { background: var(--green); box-shadow: 0 0 16px var(--green); }
+.connection.connected { color: var(--amber); }
+.connection.connected .lamp { background: var(--amber); box-shadow: 0 0 16px var(--amber); }
+.connection.koeo { color: var(--koeo-blue); }
+.connection.koeo .lamp { background: var(--koeo-blue); box-shadow: 0 0 16px var(--koeo-blue); }
+.connection.koer { color: var(--green); }
+.connection.koer .lamp { background: var(--green); box-shadow: 0 0 16px var(--green); }
 
 .cluster {
     display: grid;

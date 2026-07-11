@@ -1,7 +1,7 @@
 """Driving style and vehicle load assessment."""
 
 
-def assess_driving_style(speed, rpm, throttle, load, temp):
+def assess_driving_style(speed, rpm, throttle, load, temp, voltage=0):
     score = 0
     if rpm > 3500:
         score += 2
@@ -22,7 +22,7 @@ def assess_driving_style(speed, rpm, throttle, load, temp):
         return "Агрессивная езда / высокая нагрузка"
     if score >= 3:
         return "Активная езда"
-    if speed == 0 and rpm == 0:
+    if speed == 0 and rpm == 0 and voltage > 10:
         return "Двигатель заглушен"
     if speed == 0 and 600 < rpm < 1200:
         return "Двигатель работает на холостом ходу"

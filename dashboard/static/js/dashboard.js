@@ -4,7 +4,7 @@ const gauges = {
     temp: document.getElementById("temp").getContext("2d")
 };
 
-let target = { speed: 0, rpm: 0, temp: 0, throttle: 0, load: 0, intake: 0, maf: 0 };
+let target = { speed: 0, rpm: 0, temp: 0, throttle: 0, load: 0, intake: 0, voltage: 0 };
 let display = { ...target };
 let lastData = { gear: "N", connected: false, shift: { state: "off", text: "" }, alerts: ["Системы в норме"], misfire: { cylinders: {} } };
 
@@ -85,7 +85,7 @@ async function poll() {
     try {
         const res = await fetch("/data", { cache: "no-store" });
         lastData = await res.json();
-        ["speed", "rpm", "temp", "throttle", "load", "intake", "maf"].forEach((key) => {
+        ["speed", "rpm", "temp", "throttle", "load", "intake", "voltage"].forEach((key) => {
             target[key] = Number(lastData[key] || 0);
         });
     } catch (e) {
@@ -109,14 +109,23 @@ function render() {
     setText("throttleText", `${Math.round(display.throttle)}%`);
     setText("loadText", `${Math.round(display.load)}%`);
     setText("intakeText", `${Math.round(display.intake)} kPa`);
-    setText("mafText", `${display.maf.toFixed(1)} g/s`);
+    setText("voltageText", `${display.voltage.toFixed(1)} V`);
     setText("styleText", lastData.driving_style || "—");
     setText("alertsText", (lastData.alerts || []).join(" • "));
     setText("dtcText", `DTC: ${(lastData.misfire?.codes || []).join(", ") || "—"}`);
 
+    setText("vinText", lastData.vin || "—");
+
     const connection = document.getElementById("connectionIndicator");
-    connection.classList.toggle("connected", Boolean(lastData.connected));
-    setText("connectionText", lastData.connected ? "CONNECTED" : "DISCONNECTED");
+    const status = lastData.connection_status || (lastData.connected ? "connected" : "disconnected");
+    connection.className = `connection ${status}`;
+    const statusLabels = {
+        disconnected: "DISCONNECTED",
+        connected: "CONNECTED",
+        koeo: "KOEO",
+        koer: "KOER"
+    };
+    setText("connectionText", statusLabels[status] || "DISCONNECTED");
 
     const shiftLight = document.getElementById("shiftLight");
     shiftLight.className = `shift-light ${lastData.shift?.state || "off"}`;
@@ -132,6 +141,6 @@ function render() {
     requestAnimationFrame(render);
 }
 
-setInterval(poll, 200);
+setInterval(poll, 250);
 poll();
 render();

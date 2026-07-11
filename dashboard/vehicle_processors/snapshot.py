@@ -15,12 +15,13 @@ def enrich_state(raw):
     load = raw.get("load", 0.0)
     intake = raw.get("intake", 0.0)
     temp = raw.get("temp", 0.0)
+    voltage = raw.get("voltage", 0.0)
     reverse_hint = bool(raw.get("reverse", False))
 
     clutch = is_clutch(speed, rpm, throttle, load)
     gear = estimate_gear(speed, rpm, throttle, load, intake, reverse_hint, clutch)
     misfire = detect_misfires(raw.get("dtc"), rpm, load, throttle)
-    style = assess_driving_style(speed, rpm, throttle, load, temp)
+    style = assess_driving_style(speed, rpm, throttle, load, temp, voltage)
     shift = shift_advice(rpm, throttle, load, gear)
     alerts = build_alerts(rpm, temp, load, misfire["cylinders"], clutch, gear)
 
