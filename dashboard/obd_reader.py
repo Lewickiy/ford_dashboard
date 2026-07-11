@@ -31,6 +31,8 @@ class ObdReader:
             "connection_status": "disconnected",
         }
         self.state_lock = threading.Lock()
+        self._stop_event = threading.Event()
+        self._thread = None
 
     def safe(self, response):
         try:
@@ -84,7 +86,7 @@ class ObdReader:
         return "connected"
 
     def connect(self):
-        while True:
+        while not self._stop_event.is_set():
             try:
                 print("[OBD] Connecting...")
                 conn = obd.OBD(self.OBD_PORT, fast=False, timeout=5)
@@ -104,7 +106,8 @@ class ObdReader:
                 with self.state_lock:
                     self.state["connected"] = False
                     self.state["connection_status"] = "disconnected"
-                time.sleep(self.RECONNECT_INTERVAL)
+                if self._stop_event.wait(self.RECONNECT_INTERVAL):
+                    return
 
     def _read_voltage(self):
         for name in ("CONTROL_MODULE_VOLTAGE", "ELM_VOLTAGE"):
@@ -115,10 +118,12 @@ class ObdReader:
         return 0.0
 
     def loop(self):
-        while True:
+        while not self._stop_event.is_set():
             try:
                 if self.connection is None:
                     self.connect()
+                    if self.connection is None:
+                        continue
 
                 with self.connection_lock:
                     status = self.connection.status()
@@ -168,7 +173,7 @@ class ObdReader:
                     )
 
                 print("[OBD]", self.state["connection_status"], self.state["speed"], self.state["rpm"], self.state["temp"], self.state["voltage"])
-                time.sleep(self.REALTIME_INTERVAL)
+                self._stop_event.wait(self.REALTIME_INTERVAL)
             except Exception as e:
                 print("[OBD ERROR]", e)
                 with self.state_lock:
@@ -180,11 +185,39 @@ class ObdReader:
                 except Exception:
                     pass
                 self.connection = None
-                time.sleep(self.RECONNECT_INTERVAL)
+                self._stop_event.wait(self.RECONNECT_INTERVAL)
+        self.close()
 
     def start(self):
-        thread = threading.Thread(target=self.loop, daemon=True)
+        if self._thread and self._thread.is_alive():
+            return self._thread
+        self._stop_event.clear()
+        thread = threading.Thread(target=self.loop, name="obd-reader", daemon=False)
+        self._thread = thread
         thread.start()
+        return thread
+
+    def close(self):
+        with self.connection_lock:
+            try:
+                if self.connection:
+                    self.connection.close()
+            except Exception as exc:
+                print("[OBD CLOSE ERROR]", exc)
+            finally:
+                self.connection = None
+                with self.state_lock:
+                    self.state["connected"] = False
+                    self.state["connection_status"] = "disconnected"
+
+    def stop(self, timeout=10.0):
+        self._stop_event.set()
+        thread = self._thread
+        if thread and thread.is_alive() and thread is not threading.current_thread():
+            thread.join(timeout=timeout)
+        if thread is None or not thread.is_alive():
+            self.close()
+        return thread is None or not thread.is_alive()
 
     def get_state(self):
         with self.state_lock:
