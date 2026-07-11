@@ -93,10 +93,9 @@ class TelemetryStorage:
         with self.lock, self._connect() as conn:
             conn.executemany(
                 """
-                INSERT INTO metrics(
-                    session_id, speed, rpm, coolant_temp, throttle, engine_load,
-                    intake_pressure, voltage, fuel_level, dtc_json, connection_status
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO metrics(session_id, speed, rpm, coolant_temp, throttle, engine_load,
+                                    intake_pressure, voltage, fuel_level, dtc_json, connection_status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 [self._metric_params(session_id, state) for state in states],
             )

@@ -14,7 +14,7 @@ class TelemetryCollector:
     """Collect telemetry snapshots and persist them in bounded batches."""
 
     def __init__(
-        self, state_provider, storage=None, save_interval=1.0, batch_size=DEFAULT_BATCH_SIZE
+            self, state_provider, storage=None, save_interval=1.0, batch_size=DEFAULT_BATCH_SIZE
     ):
         self.state_provider = state_provider
         self.storage = storage or TelemetryStorage()

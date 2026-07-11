@@ -4,9 +4,15 @@ const gauges = {
     temp: document.getElementById("temp").getContext("2d")
 };
 
-let target = { speed: 0, rpm: 0, temp: 0, throttle: 0, load: 0, intake: 0, voltage: 0 };
-let display = { ...target };
-let lastData = { gear: "N", connected: false, shift: { state: "off", text: "" }, alerts: ["Системы в норме"], misfire: { cylinders: {} } };
+let target = {speed: 0, rpm: 0, temp: 0, throttle: 0, load: 0, intake: 0, voltage: 0};
+let display = {...target};
+let lastData = {
+    gear: "N",
+    connected: false,
+    shift: {state: "off", text: ""},
+    alerts: ["Системы в норме"],
+    misfire: {cylinders: {}}
+};
 
 function valueToAngle(value, max) {
     const startAngle = Math.PI * 0.76;
@@ -78,24 +84,33 @@ function drawGauge(ctx, value, max, label, unit, redFrom = 0.82) {
     ctx.fillText(`${Math.round(value)} ${unit}`, center, center + 28);
 }
 
-function lerp(a, b, t) { return a + (b - a) * t; }
-function setText(id, text) { document.getElementById(id).innerText = text; }
+function lerp(a, b, t) {
+    return a + (b - a) * t;
+}
+
+function setText(id, text) {
+    document.getElementById(id).innerText = text;
+}
 
 async function poll() {
     try {
-        const res = await fetch("/data", { cache: "no-store" });
+        const res = await fetch("/data", {cache: "no-store"});
         lastData = await res.json();
         ["speed", "rpm", "temp", "throttle", "load", "intake", "voltage"].forEach((key) => {
             target[key] = Number(lastData[key] || 0);
         });
     } catch (e) {
         lastData.connected = false;
-        Object.keys(target).forEach((key) => { target[key] *= 0.9; });
+        Object.keys(target).forEach((key) => {
+            target[key] *= 0.9;
+        });
     }
 }
 
 function render() {
-    Object.keys(display).forEach((key) => { display[key] = lerp(display[key], target[key], 0.18); });
+    Object.keys(display).forEach((key) => {
+        display[key] = lerp(display[key], target[key], 0.18);
+    });
 
     drawGauge(gauges.speed, display.speed, 220, "SPEED", "km/h");
     drawGauge(gauges.rpm, display.rpm, 6500, "RPM", "rpm", 0.68);

@@ -11,7 +11,9 @@
 }
 
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -80,12 +82,32 @@ h1 {
     box-shadow: 0 0 14px var(--red);
 }
 
-.connection.connected { color: var(--amber); }
-.connection.connected .lamp { background: var(--amber); box-shadow: 0 0 16px var(--amber); }
-.connection.koeo { color: var(--koeo-blue); }
-.connection.koeo .lamp { background: var(--koeo-blue); box-shadow: 0 0 16px var(--koeo-blue); }
-.connection.koer { color: var(--green); }
-.connection.koer .lamp { background: var(--green); box-shadow: 0 0 16px var(--green); }
+.connection.connected {
+    color: var(--amber);
+}
+
+.connection.connected .lamp {
+    background: var(--amber);
+    box-shadow: 0 0 16px var(--amber);
+}
+
+.connection.koeo {
+    color: var(--koeo-blue);
+}
+
+.connection.koeo .lamp {
+    background: var(--koeo-blue);
+    box-shadow: 0 0 16px var(--koeo-blue);
+}
+
+.connection.koer {
+    color: var(--green);
+}
+
+.connection.koer .lamp {
+    background: var(--green);
+    box-shadow: 0 0 16px var(--green);
+}
 
 .cluster {
     display: grid;
@@ -95,10 +117,25 @@ h1 {
     gap: 24px;
 }
 
-.gauge { text-align: center; width: 100%; }
-.gauge canvas { max-width: 100%; border-radius: 50%; }
-.gauge.large canvas { width: min(360px, 28vw); height: auto; }
-.gauge.small canvas { width: min(260px, 20vw); height: auto; }
+.gauge {
+    text-align: center;
+    width: 100%;
+}
+
+.gauge canvas {
+    max-width: 100%;
+    border-radius: 50%;
+}
+
+.gauge.large canvas {
+    width: min(360px, 28vw);
+    height: auto;
+}
+
+.gauge.small canvas {
+    width: min(260px, 20vw);
+    height: auto;
+}
 
 .value {
     margin-top: 6px;
@@ -127,10 +164,27 @@ h1 {
     transition: 160ms ease;
 }
 
-.shift-light.green { color: #001b0b; background: var(--green); box-shadow: 0 0 26px rgba(36, 255, 138, 0.62); }
-.shift-light.red { color: white; background: var(--red); box-shadow: 0 0 28px rgba(255, 48, 56, 0.72); animation: pulse 0.65s infinite alternate; }
+.shift-light.green {
+    color: #001b0b;
+    background: var(--green);
+    box-shadow: 0 0 26px rgba(36, 255, 138, 0.62);
+}
 
-@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.035); } }
+.shift-light.red {
+    color: white;
+    background: var(--red);
+    box-shadow: 0 0 28px rgba(255, 48, 56, 0.72);
+    animation: pulse 0.65s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.035);
+    }
+}
 
 .gear-card {
     min-height: 210px;
@@ -143,9 +197,22 @@ h1 {
     box-shadow: inset 0 0 35px rgba(99, 170, 255, 0.08), 0 0 35px rgba(0, 0, 0, 0.35);
 }
 
-.gear-label { color: var(--muted); letter-spacing: 0.35em; font-size: 13px; }
-.gear { font-size: clamp(72px, 9vw, 128px); line-height: 0.85; font-weight: 900; }
-.clutch { color: #b4c8da; font-size: 14px; }
+.gear-label {
+    color: var(--muted);
+    letter-spacing: 0.35em;
+    font-size: 13px;
+}
+
+.gear {
+    font-size: clamp(72px, 9vw, 128px);
+    line-height: 0.85;
+    font-weight: 900;
+}
+
+.clutch {
+    color: #b4c8da;
+    font-size: 14px;
+}
 
 .mini-grid {
     display: grid;
@@ -160,8 +227,18 @@ h1 {
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.mini-grid span { display: block; color: var(--muted); font-size: 11px; letter-spacing: 0.12em; }
-.mini-grid strong { display: block; margin-top: 5px; font-size: 20px; }
+.mini-grid span {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+}
+
+.mini-grid strong {
+    display: block;
+    margin-top: 5px;
+    font-size: 20px;
+}
 
 .diagnostics {
     display: grid;
@@ -170,8 +247,16 @@ h1 {
     font-size: 16px;
 }
 
-.message-line strong, .misfire-row strong { color: #7db7ff; }
-.misfire-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.message-line strong, .misfire-row strong {
+    color: #7db7ff;
+}
+
+.misfire-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
 .cyl, .dtc {
     display: inline-flex;
@@ -183,6 +268,16 @@ h1 {
     font-weight: 700;
 }
 
-.cyl.ok { color: var(--green); }
-.cyl.fail { color: #fff; background: rgba(255, 48, 56, 0.85); box-shadow: 0 0 15px rgba(255, 48, 56, 0.5); }
-.dtc { color: var(--amber); }
+.cyl.ok {
+    color: var(--green);
+}
+
+.cyl.fail {
+    color: #fff;
+    background: rgba(255, 48, 56, 0.85);
+    box-shadow: 0 0 15px rgba(255, 48, 56, 0.5);
+}
+
+.dtc {
+    color: var(--amber);
+}

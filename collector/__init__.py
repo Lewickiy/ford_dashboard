@@ -1,6 +1,6 @@
 """Telemetry collection and persistence services."""
 
-from .storage import TelemetryStorage
 from .service import TelemetryCollector
+from .storage import TelemetryStorage
 
 __all__ = ["TelemetryCollector", "TelemetryStorage"]

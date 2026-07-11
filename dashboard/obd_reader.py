@@ -172,7 +172,8 @@ class ObdReader:
                         self.state["vin"],
                     )
 
-                print("[OBD]", self.state["connection_status"], self.state["speed"], self.state["rpm"], self.state["temp"], self.state["voltage"])
+                print("[OBD]", self.state["connection_status"], self.state["speed"], self.state["rpm"],
+                      self.state["temp"], self.state["voltage"])
                 self._stop_event.wait(self.REALTIME_INTERVAL)
             except Exception as e:
                 print("[OBD ERROR]", e)
