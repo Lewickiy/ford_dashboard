@@ -7,7 +7,7 @@ def build_alerts(rpm, temp, load, misfires, clutch, gear):
         alerts.append("Температура ОЖ критически высокая")
     elif temp >= 100:
         alerts.append("Температура ОЖ повышена")
-    if rpm >= 4500:
+    if rpm >= 4000:
         alerts.append("Высокие обороты двигателя")
     if load >= 85:
         alerts.append("Высокая нагрузка на двигатель")

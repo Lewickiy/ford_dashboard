@@ -105,7 +105,7 @@ function render() {
     setText("rpmText", `${Math.round(display.rpm)} rpm`);
     setText("tempText", `${Math.round(display.temp)} °C`);
     setText("gearText", lastData.gear || "?");
-    setText("clutchText", `Сцепление: ${lastData.clutch_state || "—"}`);
+    setText("clutchText", `Clutch: ${lastData.clutch_state || "—"}`);
     setText("throttleText", `${Math.round(display.throttle)}%`);
     setText("loadText", `${Math.round(display.load)}%`);
     setText("intakeText", `${Math.round(display.intake)} kPa`);

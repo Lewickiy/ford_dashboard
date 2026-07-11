@@ -22,6 +22,10 @@ def assess_driving_style(speed, rpm, throttle, load, temp):
         return "Агрессивная езда / высокая нагрузка"
     if score >= 3:
         return "Активная езда"
+    if speed == 0 and rpm == 0:
+        return "Двигатель заглушен"
+    if speed == 0 and 600 < rpm < 1200:
+        return "Двигатель работает на холостом ходу"
     if speed < 10 and rpm < 1800:
         return "Маневрирование / пробка"
     return "Спокойная езда"
