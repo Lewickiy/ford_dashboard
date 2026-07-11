@@ -69,28 +69,34 @@ class TelemetryStorage:
                 (session_id,),
             )
 
+    def _metric_params(self, session_id, state):
+        return (
+            session_id,
+            float(state.get("speed") or 0),
+            float(state.get("rpm") or 0),
+            float(state.get("temp") or 0),
+            float(state.get("throttle") or 0),
+            float(state.get("load") or 0),
+            float(state.get("intake") or 0),
+            float(state.get("voltage") or 0),
+            float(state.get("fuel_level") or 0),
+            json.dumps(state.get("dtc"), ensure_ascii=False),
+            state.get("connection_status") or "disconnected",
+        )
+
     def save_metrics(self, session_id, state):
-        if session_id is None:
+        self.save_metrics_batch(session_id, [state])
+
+    def save_metrics_batch(self, session_id, states):
+        if session_id is None or not states:
             return
         with self.lock, self._connect() as conn:
-            conn.execute(
+            conn.executemany(
                 """
                 INSERT INTO metrics(
                     session_id, speed, rpm, coolant_temp, throttle, engine_load,
                     intake_pressure, voltage, fuel_level, dtc_json, connection_status
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                (
-                    session_id,
-                    float(state.get("speed") or 0),
-                    float(state.get("rpm") or 0),
-                    float(state.get("temp") or 0),
-                    float(state.get("throttle") or 0),
-                    float(state.get("load") or 0),
-                    float(state.get("intake") or 0),
-                    float(state.get("voltage") or 0),
-                    float(state.get("fuel_level") or 0),
-                    json.dumps(state.get("dtc"), ensure_ascii=False),
-                    state.get("connection_status") or "disconnected",
-                ),
+                [self._metric_params(session_id, state) for state in states],
             )
