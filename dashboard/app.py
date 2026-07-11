@@ -1,5 +1,8 @@
+import os
+
 from flask import Flask, jsonify, render_template
 
+from collector import TelemetryCollector, TelemetryStorage
 from obd_reader import ObdReader
 from vehicle_processors import enrich_state
 
@@ -8,6 +11,14 @@ app = Flask(__name__)
 obd = ObdReader()
 
 obd.start()
+
+storage = TelemetryStorage(os.getenv("TELEMETRY_DB_PATH", "telemetry.sqlite3"))
+collector = TelemetryCollector(
+    obd.get_state,
+    storage=storage,
+    save_interval=float(os.getenv("TELEMETRY_SAVE_INTERVAL", "1")),
+)
+collector.start()
 
 
 @app.route("/")
