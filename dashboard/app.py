@@ -12,7 +12,7 @@ obd = ObdReader()
 
 obd.start()
 
-storage = TelemetryStorage(os.getenv("TELEMETRY_DB_PATH", "telemetry.sqlite3"))
+storage = TelemetryStorage(os.getenv("TELEMETRY_DB_PATH", "data/telemetry.sqlite3"))
 collector = TelemetryCollector(
     obd.get_state,
     storage=storage,
