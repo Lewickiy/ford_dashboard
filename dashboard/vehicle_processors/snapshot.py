@@ -23,7 +23,7 @@ def enrich_state(raw):
     misfire = detect_misfires(raw.get("dtc"), rpm, load, throttle)
     style = assess_driving_style(speed, rpm, throttle, load, temp, voltage)
     shift = shift_advice(rpm, throttle, load, gear)
-    alerts = build_alerts(rpm, temp, load, misfire["cylinders"], clutch, gear)
+    alerts = build_alerts(rpm, temp, load, misfire["cylinders"], clutch, gear, voltage)
 
     enriched = raw.copy()
     enriched.update(

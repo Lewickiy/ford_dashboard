@@ -1,8 +1,10 @@
 """Human-readable warnings built from processed telemetry."""
 
 
-def build_alerts(rpm, temp, load, misfires, clutch, gear):
+def build_alerts(rpm, temp, load, misfires, clutch, gear, voltage):
     alerts = []
+    if voltage == 0:
+        alerts.append("—")
     if temp >= 110:
         alerts.append("Температура ОЖ критически высокая")
     elif temp >= 100:
